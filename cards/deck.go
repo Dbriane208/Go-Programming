@@ -12,3 +12,9 @@ func (d deck) print(){
 		fmt.Println(i,card)
 	}
 }
+
+// Returning multiple values which in this case 
+// we're returning hand of deck and the remaining deck in the slice
+func deal(d deck,handSize int) (deck,deck){
+	return d[:handSize],d[handSize:]
+}
