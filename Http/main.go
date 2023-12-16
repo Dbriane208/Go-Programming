@@ -34,6 +34,10 @@ func main(){
 	//we initialize the log writer function and print the response of our body
 	lw := logWriter{}
 	io.Copy(lw,resp.Body)
+
+	// hard mode interfaces
+	openFileInTerminal()
+	
 }
 
 func (logWriter) Write(bs []byte) (int,error){
@@ -45,3 +49,4 @@ func (logWriter) Write(bs []byte) (int,error){
 	//return the length of the bs and a nil error
 	return len(bs),nil
 }
+
