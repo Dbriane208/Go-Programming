@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main(){
@@ -26,7 +27,29 @@ func main(){
 	}
 
 	// we receive the message from the channel and log it immediately 
-	fmt.Println(<-c)
+	// fmt.Println(<-c)
+	// fmt.Println(<-c)
+	// fmt.Println(<-c)
+
+	// instead of having the multiple print out statements
+	// we can simplify the calls by using a for loop
+	// for i := 0; i < len(links); i++{
+	// 	fmt.Println(<-c)
+	// }
+
+	// we create an infinite for loop to iterate through the repeating links
+	for l:= range c{
+		//go checkLink(l,c)
+		// to modify our function to use function literal so that we can use time blocking
+		// we declare an argument to pass a string in the function literal inorder to passa value 
+		// after every iteration
+		go func (link string){
+            time.Sleep(5*time.Second)
+			go checkLink(link,c)
+		}(l)
+		// we're using the brackets to invoke the function
+		// we pass the value that we received to the memory to give go routine acess to it
+	}
 }
 
 // initializing a function to check through the link 
@@ -37,10 +60,15 @@ func checkLink(link string,c chan string){
   if err != nil{
 	fmt.Println(link,"might be down")
 	// we send a message to our channel
-	c <- "Might be down I think"
+	// c <- "Might be down I think"
+	// instead of sending a fixed message we can use the link itself
+	c <- link
 	return
   }
   fmt.Println(link,"is up")
   // we send a message to our channel
-  c<- "Yes it's up"
+  //  c<- "Yes it's up"
+  // instead of sending a fixed message we can use the link itself
+  c <- link
+	  
 }
